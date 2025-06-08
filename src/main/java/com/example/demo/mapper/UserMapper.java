@@ -15,4 +15,17 @@ public class UserMapper {
 
         return user;
     }
+    public static UserDTO toDTO(User user) {
+        if (user == null) {
+            return null;
+        }
+        return new UserDTO(
+            user.getUsername(),
+            user.getName(),
+            user.getSurname()
+        );
+    }
+
+
+    
 }
