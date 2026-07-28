@@ -1,3 +1,3 @@
 # demo
 demo
-Commit’i ortak yazarlı oluştur
+Co-author email correction.
