@@ -1,16 +1,37 @@
 services:
   postgres:
-    image: postgres:16
-    container_name: demo_postgres
+    image: postgres:16-alpine
+    container_name: identity-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: identity
+      POSTGRES_PASSWORD: identity
+      POSTGRES_DB: identity_db
     ports:
       - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U identity -d identity_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  identity-service:
+    build: .
+    container_name: identity-service
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:postgresql://postgres:5432/identity_db
+      DB_USERNAME: identity
+      DB_PASSWORD: identity
+      JWT_SECRET: change-me-to-a-secure-256-bit-secret-key-for-hs256!!
+      JWT_EXPIRATION_MS: "86400000"
+    ports:
+      - "8080:8080"
 
 volumes:
   pg_data:

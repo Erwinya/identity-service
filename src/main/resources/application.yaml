@@ -1,19 +1,35 @@
 server:
-  port: 8080 # This is the default value
+  port: 8080
 
 spring:
   application:
-    name: demo
+    name: identity-service
   datasource:
-    url: jdbc:postgresql://localhost:5432/mydatabase
-    username: myuser
-    password: mypassword
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/identity_db}
+    username: ${DB_USERNAME:identity}
+    password: ${DB_PASSWORD:identity}
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    open-in-view: false
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:change-me-to-a-secure-256-bit-secret-key-for-hs256!!}
+    expiration-ms: ${JWT_EXPIRATION_MS:86400000}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
+
+logging:
+  level:
+    com.halukkilincer.identity: INFO
