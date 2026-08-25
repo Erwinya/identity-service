@@ -50,7 +50,16 @@ API listens on `http://localhost:8080`.
 
 - Java 17+
 - Maven 3.9+ (or use `./mvnw`)
-- PostgreSQL 16 (or start only the DB container)
+
+**No database installed?** Use the in-memory H2 profile:
+
+```bash
+./mvnw spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+API listens on `http://localhost:8080` with an ephemeral H2 database (data is lost on shutdown).
+
+**With PostgreSQL:**
 
 ```bash
 docker compose up postgres -d
