@@ -30,8 +30,11 @@ JWT-based identity and user management REST API built with Spring Boot 3, Postgr
 | `POST` | `/api/v1/auth/login` | No | Authenticate, return JWT |
 | `GET` | `/api/v1/users/me` | Yes | Current user profile |
 | `GET` | `/api/v1/users/{username}` | Yes | Lookup user by username |
+| `GET` | `/actuator/health` | No | Liveness/readiness probe |
 
 Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
+
+Health: [http://localhost:8080/actuator/health](http://localhost:8080/actuator/health)
 
 ## Quick start (Docker)
 
