@@ -57,6 +57,12 @@ API listens on `http://localhost:8080`.
 ./mvnw spring-boot:run -Dspring-boot.run.profiles=local
 ```
 
+On Windows PowerShell:
+
+```powershell
+.\mvnw.cmd spring-boot:run "-Dspring-boot.run.profiles=local"
+```
+
 API listens on `http://localhost:8080` with an ephemeral H2 database (data is lost on shutdown).
 
 **With PostgreSQL:**
