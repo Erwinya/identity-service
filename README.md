@@ -86,6 +86,14 @@ Environment variables (optional; defaults work for local Docker):
 
 ## Example requests
 
+### Health
+
+```bash
+curl -s http://localhost:8080/actuator/health
+```
+
+For scripts, prefer `curl -sf` so a non-healthy response fails with a non-zero exit code.
+
 ### Register
 
 ```bash
