@@ -92,6 +92,12 @@ Environment variables (optional; defaults work for local Docker):
 curl -s http://localhost:8080/actuator/health
 ```
 
+Windows PowerShell:
+
+```powershell
+Invoke-RestMethod http://localhost:8080/actuator/health
+```
+
 For scripts, prefer `curl -sf` so a non-healthy response fails with a non-zero exit code.
 
 ### Register
@@ -108,6 +114,18 @@ curl -s -X POST http://localhost:8080/api/v1/auth/register \
   }"
 ```
 
+```powershell
+$body = @{
+  username  = "haluk"
+  email     = "haluk@example.com"
+  password  = "Secret123!"
+  firstName = "Haluk"
+  lastName  = "Kilincer"
+} | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/auth/register `
+  -ContentType "application/json" -Body $body
+```
+
 ### Login
 
 ```bash
@@ -116,11 +134,22 @@ curl -s -X POST http://localhost:8080/api/v1/auth/login \
   -d "{\"username\":\"haluk\",\"password\":\"Secret123!\"}"
 ```
 
+```powershell
+$login = @{ username = "haluk"; password = "Secret123!" } | ConvertTo-Json
+Invoke-RestMethod -Method Post -Uri http://localhost:8080/api/v1/auth/login `
+  -ContentType "application/json" -Body $login
+```
+
 ### Current user
 
 ```bash
 curl -s http://localhost:8080/api/v1/users/me \
   -H "Authorization: Bearer <accessToken>"
+```
+
+```powershell
+Invoke-RestMethod http://localhost:8080/api/v1/users/me `
+  -Headers @{ Authorization = "Bearer <accessToken>" }
 ```
 
 ## Project structure
