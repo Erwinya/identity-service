@@ -10,6 +10,7 @@ JWT-based identity and user management REST API built with Spring Boot 3, Postgr
 - OpenAPI / Swagger UI documentation
 - Docker Compose stack (PostgreSQL + application)
 - Unit and controller tests
+- GitHub Actions CI (`./mvnw test`)
 
 ## Tech stack
 
