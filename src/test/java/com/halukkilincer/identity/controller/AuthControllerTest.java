@@ -6,6 +6,7 @@ import com.halukkilincer.identity.dto.LoginRequest;
 import com.halukkilincer.identity.dto.RegisterRequest;
 import com.halukkilincer.identity.dto.UserResponse;
 import com.halukkilincer.identity.entity.Role;
+import com.halukkilincer.identity.exception.GlobalExceptionHandler;
 import com.halukkilincer.identity.security.JwtAuthenticationFilter;
 import com.halukkilincer.identity.security.JwtService;
 import com.halukkilincer.identity.service.AuthService;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
@@ -38,6 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         )
 )
 @AutoConfigureMockMvc(addFilters = false)
+@Import(GlobalExceptionHandler.class)
 class AuthControllerTest {
 
     @Autowired
@@ -95,5 +98,26 @@ class AuthControllerTest {
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.accessToken").value("token"));
+    }
+
+    @Test
+    void register_RejectsInvalidPayload() throws Exception {
+        RegisterRequest request = new RegisterRequest(
+                "ab",
+                "not-an-email",
+                "short",
+                "",
+                ""
+        );
+
+        mockMvc.perform(post("/api/v1/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.statusCode").value(400))
+                .andExpect(jsonPath("$.statusMessage").value("VALIDATION_FAILED"))
+                .andExpect(jsonPath("$.data.username").exists())
+                .andExpect(jsonPath("$.data.email").exists())
+                .andExpect(jsonPath("$.data.password").exists());
     }
 }

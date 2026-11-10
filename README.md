@@ -6,7 +6,8 @@ JWT-based identity and user management REST API built with Spring Boot 3, Postgr
 
 - User registration and login with **JWT** (Bearer tokens)
 - Password hashing with **BCrypt**
-- Request validation and centralized exception handling
+- Request validation with field-level messages (`VALIDATION_FAILED`) and username pattern checks
+- Centralized exception handling
 - OpenAPI / Swagger UI documentation
 - Docker Compose stack (PostgreSQL + application)
 - Unit and controller tests
